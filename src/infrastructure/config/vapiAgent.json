@@ -4,7 +4,7 @@
     "voice":  {
                   "provider":  "11labs",
                   "model":  "eleven_multilingual_v2",
-                  "voiceId":  "rachel"
+                  "voiceId":  "21m00Tcm4TlvDq8ikWAM"
               },
     "transcriber":  {
                         "provider":  "deepgram",
