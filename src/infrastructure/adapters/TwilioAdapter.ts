@@ -17,7 +17,7 @@ export class TwilioAdapter implements ITwilioAdapter {
     this.client = new Twilio(accountSid, authToken);
   }
 
-  async sendWhatsAppMessage(to: string, message: string, mediaUrl?: string): Promise<void> {
+  async sendWhatsAppMessage(to: string, message: string, mediaUrls?: string[]): Promise<void> {
     try {
       const payload: any = {
         from: this.fromNumber,
@@ -25,8 +25,8 @@ export class TwilioAdapter implements ITwilioAdapter {
         body: message,
       };
 
-      if (mediaUrl) {
-        payload.mediaUrl = [mediaUrl];
+      if (mediaUrls && mediaUrls.length > 0) {
+        payload.mediaUrl = mediaUrls;
       }
 
       await this.client.messages.create(payload);
@@ -37,3 +37,4 @@ export class TwilioAdapter implements ITwilioAdapter {
     }
   }
 }
+

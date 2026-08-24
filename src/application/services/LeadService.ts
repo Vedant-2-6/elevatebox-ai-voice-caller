@@ -70,8 +70,9 @@ export class LeadService {
     const architectureUrl = `${baseUrl}/architecture.png`;
     const devPhone = process.env.DEVELOPER_PHONE_NUMBER || '';
 
-    const message = `Thank you for your time! Here is a summary of what we discussed:\n\nBudget: ${lead.budget}\nTimeline: ${lead.timeline}\nFeatures: ${lead.features}\n\nI built this AI system. You can reach me directly at ${devPhone}.\nHere is my resume: ${resumeUrl}`;
+    const message = `Hi there, it was great speaking with you! Just to recap, I understand you are looking to build an e-commerce platform for ${lead.products} with ${lead.features}. You mentioned a budget of ${lead.budget} and a timeline of ${lead.timeline}, which we can absolutely accommodate.\n\nI built this entire AI system! You can reach me directly at ${devPhone}.\n\nHere is my resume: ${resumeUrl}`;
 
-    await this.twilioAdapter.sendWhatsAppMessage(lead.phoneNumber, message, architectureUrl);
+    await this.twilioAdapter.sendWhatsAppMessage(lead.phoneNumber, message, [architectureUrl, resumeUrl]);
   }
 }
+
