@@ -36,6 +36,8 @@ const webhookController = new WebhookController(leadService);
 // Routes
 app.post('/api/webhooks/vapi', webhookController.handleVapiWebhook);
 
+app.get('/api/leads', async (req, res) => { try { const leads = await leadRepository.findAll(); res.json(leads); } catch (e) { res.status(500).json({ error: 'Failed to fetch leads' }); } });
+
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('Unhandled Error:', err.message || err);
@@ -50,4 +52,5 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
 
