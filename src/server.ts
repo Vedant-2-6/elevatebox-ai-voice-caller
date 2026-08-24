@@ -11,6 +11,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust proxy for Railway so rate limiting works correctly
+app.set('trust proxy', 1);
+
 // Apply Rate Limiting
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -52,5 +55,6 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
 
 
