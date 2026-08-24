@@ -2,9 +2,9 @@
     "name":  "ElevateBox Sales Agent",
     "firstMessage":  "Namaste! Main ElevateBox ki taraf se Priya bol rahi hoon. Hum e-commerce websites banate hain. Kya aap apna online store banana chahte hain?",
     "voice":  {
-                  "provider":  "11labs",
-                  "model":  "eleven_multilingual_v2",
-                  "voiceId":  "21m00Tcm4TlvDq8ikWAM"
+                  "speed":  0.95,
+                  "provider":  "openai",
+                  "voiceId":  "shimmer"
               },
     "transcriber":  {
                         "provider":  "deepgram",
