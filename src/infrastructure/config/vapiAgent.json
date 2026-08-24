@@ -1,80 +1,101 @@
 {
-  "name": "ElevateBox Sales Agent",
-  "firstMessage": "Namaste! Main ElevateBox ki taraf se Priya bol rahi hoon. Hum e-commerce websites banate hain. Kya aap apna online store banana chahte hain?",
-  "voice": {
-    "provider": "openai",
-    "voiceId": "shimmer",
-    "speed": 0.95
-  },
-  "transcriber": {
-    "provider": "deepgram",
-    "model": "nova-2",
-    "language": "multi",
-    "endpointing": 300
-  },
-  "startSpeakingPlan": {
-    "waitSeconds": 0.2,
-    "smartEndpointingEnabled": true
-  },
-  "stopSpeakingPlan": {
-    "voiceSeconds": 0.1,
-    "backoffSeconds": 0.5
-  },
-  "model": {
-    "provider": "openai",
-    "model": "gpt-4o-mini",
-    "messages": [
-      {
-        "role": "system",
-        "content": "You are a female sales agent named Priya for ElevateBox, an e-commerce website development company.\n\n## LANGUAGE RULES — NON-NEGOTIABLE:\n- Speak HINDI by default in every response.\n- ONLY switch to Telugu if the customer speaks Telugu.\n- ONLY switch to English if the customer speaks English or explicitly asks for English.\n- If the customer spoke Hindi to you, your response MUST be in Hindi. Responding in English when customer used Hindi is FORBIDDEN.\n- Use feminine Hindi verb forms always: bol rahi hoon, samajh rahi hoon, chahti hoon, bata rahi hoon.\n\n## CONVERSATION RULES:\n- NEVER re-ask something the customer already told you. Remember everything they say.\n- Keep each response to 1-2 short sentences only. No long speeches.\n- Be warm, friendly, and natural like a real human salesperson.\n\n## GOALS (collect in this order, one at a time):\n1. What products/business do they have?\n2. What is their budget? (ask once, never again)\n3. What is their timeline? (ask once, never again)\n4. What features do they need? (payment gateway, inventory, mobile app, etc.)\n5. Call qualify_lead tool with Hot, Warm, or Cold once you have enough info.\n6. If they want a callback, call schedule_callback tool."
-      }
-    ],
-    "tools": [
-      {
-        "type": "function",
-        "function": {
-          "name": "qualify_lead",
-          "description": "Call this tool once you have gathered the customers budget, products, timeline, and features, or if they express clear interest or disinterest.",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "intent": {
-                "type": "string",
-                "enum": ["Hot", "Warm", "Cold"],
-                "description": "Hot: High intent to buy immediately. Warm: Interested but not ready. Cold: Just looking or not interested."
+    "name":  "ElevateBox Sales Agent",
+    "firstMessage":  "Namaste! Main ElevateBox ki taraf se Priya bol rahi hoon. Hum e-commerce websites banate hain. Kya aap apna online store banana chahte hain?",
+    "voice":  {
+                  "provider":  "11labs",
+                  "model":  "eleven_multilingual_v2",
+                  "voiceId":  "rachel"
               },
-              "budget": { "type": "string" },
-              "products": { "type": "string", "description": "What they are selling" },
-              "timeline": { "type": "string" },
-              "features": { "type": "string" }
-            },
-            "required": ["intent", "budget", "products", "timeline", "features"]
-          }
-        },
-        "server": {
-          "url": "https://shampoo-suburb-buckskin.ngrok-free.dev/api/webhooks/vapi"
-        }
-      },
-      {
-        "type": "function",
-        "function": {
-          "name": "schedule_callback",
-          "description": "Call this tool if the customer asks to be called back at a specific time.",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "datetime": {
-                "type": "string",
-                "description": "The natural language time or ISO datetime requested by the user."
+    "transcriber":  {
+                        "provider":  "deepgram",
+                        "model":  "nova-2",
+                        "language":  "multi",
+                        "endpointing":  300
+                    },
+    "startSpeakingPlan":  {
+                              "waitSeconds":  0.2,
+                              "smartEndpointingEnabled":  true
+                          },
+    "stopSpeakingPlan":  {
+                             "voiceSeconds":  0.1,
+                             "backoffSeconds":  0.5
+                         },
+    "model":  {
+                  "provider":  "openai",
+                  "model":  "gpt-4o-mini",
+                  "messages":  [
+                                   {
+                                       "role":  "system",
+                                       "content":  "You are a female sales agent named Priya for ElevateBox, an e-commerce website development company.\n\n## LANGUAGE RULES — NON-NEGOTIABLE:\n- Speak HINDI by default in every response.\n- ONLY switch to Telugu if the customer speaks Telugu.\n- ONLY switch to English if the customer speaks English or explicitly asks for English.\n- If the customer spoke Hindi to you, your response MUST be in Hindi. Responding in English when customer used Hindi is FORBIDDEN.\n- Use feminine Hindi verb forms always: bol rahi hoon, samajh rahi hoon, chahti hoon, bata rahi hoon.\n\n## CONVERSATION RULES:\n- NEVER re-ask something the customer already told you. Remember everything they say.\n- Keep each response to 1-2 short sentences only. No long speeches.\n- Be warm, friendly, and natural like a real human salesperson.\n\n## GOALS (collect in this order, one at a time):\n1. What products/business do they have?\n2. What is their budget? (ask once, never again)\n3. What is their timeline? (ask once, never again)\n4. What features do they need? (payment gateway, inventory, mobile app, etc.)\n5. Call qualify_lead tool with Hot, Warm, or Cold once you have enough info.\n6. If they want a callback, call schedule_callback tool."
+                                   }
+                               ],
+                  "tools":  [
+                                {
+                                    "type":  "function",
+                                    "function":  {
+                                                     "name":  "qualify_lead",
+                                                     "description":  "Call this tool once you have gathered the customers budget, products, timeline, and features, or if they express clear interest or disinterest.",
+                                                     "parameters":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "intent":  {
+                                                                                                          "type":  "string",
+                                                                                                          "enum":  [
+                                                                                                                       "Hot",
+                                                                                                                       "Warm",
+                                                                                                                       "Cold"
+                                                                                                                   ],
+                                                                                                          "description":  "Hot: High intent to buy immediately. Warm: Interested but not ready. Cold: Just looking or not interested."
+                                                                                                      },
+                                                                                           "budget":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                           "products":  {
+                                                                                                            "type":  "string",
+                                                                                                            "description":  "What they are selling"
+                                                                                                        },
+                                                                                           "timeline":  {
+                                                                                                            "type":  "string"
+                                                                                                        },
+                                                                                           "features":  {
+                                                                                                            "type":  "string"
+                                                                                                        }
+                                                                                       },
+                                                                        "required":  [
+                                                                                         "intent",
+                                                                                         "budget",
+                                                                                         "products",
+                                                                                         "timeline",
+                                                                                         "features"
+                                                                                     ]
+                                                                    }
+                                                 },
+                                    "server":  {
+                                                   "url":  "https://shampoo-suburb-buckskin.ngrok-free.dev/api/webhooks/vapi"
+                                               }
+                                },
+                                {
+                                    "type":  "function",
+                                    "function":  {
+                                                     "name":  "schedule_callback",
+                                                     "description":  "Call this tool if the customer asks to be called back at a specific time.",
+                                                     "parameters":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "datetime":  {
+                                                                                                            "type":  "string",
+                                                                                                            "description":  "The natural language time or ISO datetime requested by the user."
+                                                                                                        }
+                                                                                       },
+                                                                        "required":  [
+                                                                                         "datetime"
+                                                                                     ]
+                                                                    }
+                                                 },
+                                    "server":  {
+                                                   "url":  "https://shampoo-suburb-buckskin.ngrok-free.dev/api/webhooks/vapi"
+                                               }
+                                }
+                            ]
               }
-            },
-            "required": ["datetime"]
-          }
-        },
-        "server": {
-          "url": "https://shampoo-suburb-buckskin.ngrok-free.dev/api/webhooks/vapi"
-        }
-      }
-    ]
-  }
 }
