@@ -80,8 +80,6 @@ export class SQLiteLeadRepository implements ILeadRepository {
     });
   }
 
-  async findAll(): Promise<Lead[]> { return new Promise((resolve, reject) => { this.db.all('SELECT * FROM leads', [], (err, rows: any[]) => { if (err) return reject(err); resolve(rows.map(row => ({ id: row.id, phoneNumber: row.phoneNumber, intent: row.intent, budget: row.budget, products: row.products, timeline: row.timeline, features: row.features, callbackTime: row.callbackTime, summary: row.summary, createdAt: new Date(row.createdAt), updatedAt: new Date(row.updatedAt) }))); }); }); }
-
   async update(lead: Lead): Promise<void> {
     return new Promise((resolve, reject) => {
       this.db.run(
@@ -104,4 +102,3 @@ export class SQLiteLeadRepository implements ILeadRepository {
     });
   }
 }
-
