@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElevateBox - AI Voice Caller</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+    <div class="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2">ElevateBox</h1>
+            <p class="text-gray-400">AI Sales Agent Evaluation</p>
+        </div>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Phone Number to Call</label>
+                <input type="text" id="phoneInput" value="+918688664337" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+            </div>
+
+            <button id="callButton" onclick="triggerCall()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-all transform hover:scale-105">
+                <i class="fas fa-phone-alt"></i>
+                <span>Trigger AI Call</span>
+            </button>
+
+            <div id="statusAlert" class="hidden rounded-lg p-4 text-sm mt-4">
+                <p id="statusMessage" class="flex items-center space-x-2"></p>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center text-xs text-gray-500">
+            SDE Intern Assignment Submission
+        </div>
+    </div>
+
+    <script>
+        async function triggerCall() {
+            const btn = document.getElementById('callButton');
+            const alert = document.getElementById('statusAlert');
+            const msg = document.getElementById('statusMessage');
+            const phone = document.getElementById('phoneInput').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i><span>Initiating Call...</span>';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            alert.classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/dial', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: phone })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert.className = 'rounded-lg p-4 text-sm mt-4 bg-green-900/50 text-green-400 border border-green-800 block';
+                    msg.innerHTML = '<i class="fas fa-check-circle"></i><span>Call successfully queued! The AI will call you in a few seconds.</span>';
+                } else {
+                    throw new Error(data.error || 'Failed to trigger call');
+                }
+            } catch (error) {
+                alert.className = 'rounded-lg p-4 text-sm mt-4 bg-red-900/50 text-red-400 border border-red-800 block';
+                msg.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>Error: ' + error.message + '</span>';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-phone-alt"></i><span>Trigger AI Call</span>';
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        }
+    </script>
+</body>
+</html>

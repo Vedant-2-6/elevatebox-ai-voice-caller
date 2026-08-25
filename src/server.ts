@@ -41,6 +41,47 @@ app.post('/api/webhooks/vapi', webhookController.handleVapiWebhook);
 
 app.get('/api/leads', async (req, res) => { try { const leads = await leadRepository.findAll(); res.json(leads); } catch (e) { res.status(500).json({ error: 'Failed to fetch leads' }); } });
 
+app.post('/api/dial', async (req, res) => {
+  try {
+    const targetNumber = req.body.phoneNumber || process.env.DEVELOPER_PHONE_NUMBER || '+918688664337';
+    const cleanNumber = targetNumber.replace('whatsapp:', '');
+    const vapiApiKey = process.env.VAPI_API_KEY;
+    
+    if (!vapiApiKey) {
+      return res.status(500).json({ error: 'VAPI_API_KEY is not set' });
+    }
+
+    const vapiAgentConfig = JSON.parse(JSON.stringify(require('./infrastructure/config/vapiAgent.json')));
+    const webhookUrl = \\/api/webhooks/vapi\;
+    vapiAgentConfig.model.tools.forEach((tool: any) => {
+      if (tool.server) tool.server.url = webhookUrl;
+    });
+
+    const response = await fetch('https://api.vapi.ai/call/phone', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: \Bearer \\,
+      },
+      body: JSON.stringify({
+        phoneNumber: {
+          twilioPhoneNumber: process.env.TWILIO_PHONE_NUMBER_FOR_CALLS || '+16614511548',
+          twilioAccountSid: process.env.TWILIO_ACCOUNT_SID,
+          twilioAuthToken: process.env.TWILIO_AUTH_TOKEN
+        },
+        customer: { number: cleanNumber },
+        assistant: vapiAgentConfig,
+      }),
+    });
+
+    const data = await response.json();
+    res.json({ success: true, call: data });
+  } catch (error) {
+    console.error('Error dialing:', error);
+    res.status(500).json({ error: 'Failed to initiate call' });
+  }
+});
+
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('Unhandled Error:', err.message || err);
@@ -55,6 +96,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
 
 
 
