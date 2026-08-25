@@ -27,7 +27,9 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files for WhatsApp media URLs (resume, architecture diagram)
-app.use(express.static('public'));
+import path from 'path';
+app.use(express.static(path.join(__dirname, '../public')));
+app.get('/', (req, res) => { res.sendFile(path.join(__dirname, '../public/index.html')); });
 
 // Dependency Injection
 const dbPath = process.env.DATABASE_PATH || './database.sqlite';
@@ -96,6 +98,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
 
 
 
