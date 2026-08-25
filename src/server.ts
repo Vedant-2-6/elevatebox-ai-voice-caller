@@ -54,7 +54,7 @@ app.post('/api/dial', async (req, res) => {
     }
 
     const vapiAgentConfig = JSON.parse(JSON.stringify(require('./infrastructure/config/vapiAgent.json')));
-    const webhookUrl = \\/api/webhooks/vapi\;
+    const webhookUrl = `${process.env.BASE_URL || 'https://elevatebox-ai-voice-caller-production.up.railway.app'}/api/webhooks/vapi`;
     vapiAgentConfig.model.tools.forEach((tool: any) => {
       if (tool.server) tool.server.url = webhookUrl;
     });
@@ -63,7 +63,7 @@ app.post('/api/dial', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: \Bearer \\,
+        Authorization: `Bearer ${vapiApiKey}`,
       },
       body: JSON.stringify({
         phoneNumber: {
