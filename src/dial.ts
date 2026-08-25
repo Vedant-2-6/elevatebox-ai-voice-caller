@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const dial = async () => {
-  const targetNumber = process.env.DEVELOPER_PHONE_NUMBER || '+919016030308';
+  let targetNumber = process.env.DEVELOPER_PHONE_NUMBER || '+919016030308';
+  targetNumber = targetNumber.replace('whatsapp:', '');
   const vapiApiKey = process.env.VAPI_API_KEY;
 
   if (!vapiApiKey) {
@@ -48,3 +49,4 @@ const dial = async () => {
 };
 
 dial();
+
