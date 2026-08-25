@@ -53,7 +53,10 @@ app.post('/api/dial', async (req, res) => {
       return res.status(500).json({ error: 'VAPI_API_KEY is not set' });
     }
 
-    const vapiAgentConfig = JSON.parse(JSON.stringify(require('./infrastructure/config/vapiAgent.json')));
+    const fs = require('fs');
+    const path = require('path');
+    const agentConfigPath = path.join(process.cwd(), 'src/infrastructure/config/vapiAgent.json');
+    const vapiAgentConfig = JSON.parse(fs.readFileSync(agentConfigPath, 'utf-8'));
     const webhookUrl = `${process.env.BASE_URL || 'https://elevatebox-ai-voice-caller-production.up.railway.app'}/api/webhooks/vapi`;
     vapiAgentConfig.model.tools.forEach((tool: any) => {
       if (tool.server) tool.server.url = webhookUrl;
